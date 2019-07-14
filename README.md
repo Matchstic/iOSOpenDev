@@ -61,7 +61,8 @@ Right now, running tweaks in the iOS Simulator isn't super smooth. You need to d
 %config(generator=internal);
 ```
 3. Start an iOS Simulator (`Xcode -> Open Developer Tool -> Simulator`) and wait for it to finish starting up
-4. Compile your tweak again
+4. Copy the `.plist` sitting alongside your `dylib` to `/opt/simject` (temporary workaround, needed only the first time)
+5. Compile your tweak again
 
 ### Authors
 
