@@ -61,7 +61,7 @@ export ActionNames=( \
 	"UpdateIncludeAndLib" \
 	"DumpSDKHeaders" "CopyHeadersToSDK" "DumpAndCopyHeaders" "RemoveCopiedHeaders" "DumpAllHeaders" \
 	"AddSshKeyToDevice" \
-	"XcodeBuildPhase" "XcodeBuildPhaseLogos" "Help")
+	"XcodeBuildPhase" "XcodeBuildPhaseLogos" "XcodeBuildPhaseSimjectHelper" "Help")
 export ActionProperty_ShortArg=0
 export ActionProperty_ShortUsage=1
 export ActionProperty_Options=2
@@ -212,6 +212,10 @@ export Action_XcodeBuildPhaseLogos=("--xcbp-logos" "" "" 0 0 xcodeBuildPhase_Log
         iOSOpenDev templates only.")
 
 export Action_XcodeBuildPhase=("--xcbp" "" "" 0 0 xcodeBuildPhase false \
+"        DO NOT USE. For use by Xcode as a Build Phase for projects created from
+        iOSOpenDev templates only.")
+            
+export Action_XcodeBuildPhase=("--simject-helper" "" "" 0 0 xcodeBuildPhase_SimjectHelper false \
 "        DO NOT USE. For use by Xcode as a Build Phase for projects created from
         iOSOpenDev templates only.")
 
@@ -512,7 +516,7 @@ function signCode() # args: executableToSign, identityToSignWith
 
 		# use ldid #
 		
-		cmdBin="ldid"
+		cmdBin="ldid2"
 		
 		if [[ "$entitlements" == "" ]]; then
 			cmdArg=("-S")
@@ -1512,6 +1516,18 @@ function doesFileContain() # args: filePath, pattern
 	
 	# return #
 	echo $funcReturn
+}
+
+function xcodeBuildPhase_SimjectHelper() # no args
+{
+    if [ "$SIMJECT" = "YES" ]; then
+    
+        echo "Automating simject..."
+        cp "$TARGET_BUILD_DIR/$EXECUTABLE_PATH" /opt/simject
+        for dylib in /opt/simject/*.dylib; do ldid -S "$dylib"; done
+        resim
+
+    fi
 }
 
 function xcodeBuildPhase_Logos() # no args

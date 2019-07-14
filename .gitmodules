@@ -1,0 +1,6 @@
+[submodule "deps/simject"]
+	path = deps/simject
+	url = https://github.com/angelXwind/simject
+[submodule "deps/sdks"]
+	path = deps/sdks
+	url = https://github.com/theos/sdks
