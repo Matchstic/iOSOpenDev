@@ -1,6 +1,7 @@
 ## iOSOpenDev—iOS Open Development
 Copyright (c) 2012-2013 Spencer W.S. James (Kokoabim).
-Copyright (c) 2019- Matt Clarke (Matchstic)
+
+Copyright (c) 2019- Matt Clarke (Matchstic).
 
 iOSOpenDev allows you to develop tweaks and other jailbroken utilities using Xcode.
 
@@ -44,6 +45,7 @@ You may also need to patch any new iOS simulators. Use the following to do this:
 - To compile a project, use Xcode's `Product -> Build`. Executables built can be found via the auto-generated `LatestBuild` symlink, with built packages under `Packages`.
 - To change version numbers of a built package, modify `PackageVersion.plist`.
 
+### Authors
 
 * Follow [@kokoabim](https://twitter.com/kokoabim)
 * Follow [@_Matchstic](https://twitter.com/_Matchstic)
