@@ -8,6 +8,7 @@ iOSOpenDev allows you to develop tweaks and other jailbroken utilities using Xco
 ### Dependencies
 
 - [`theos`](https://github.com/theos/theos): to handle stuff like pre-processing Logos syntax.
+- [`simject`](https://github.com/angelXwind/simject): to run tweaks in the iOS Simulator
 
 ### Installation
 
@@ -44,6 +45,18 @@ You may also need to patch any new iOS simulators. Use the following to do this:
 - To create a new project, use Xcode's `File -> New -> Project` option. Then, scroll down to `Templates` in the `iOS` tab.
 - To compile a project, use Xcode's `Product -> Build`. Executables built can be found via the auto-generated `LatestBuild` symlink, with built packages under `Packages`.
 - To change version numbers of a built package, modify `PackageVersion.plist`.
+
+### iOS Simulator
+
+Right now, running tweaks in the iOS Simulator isn't super smooth. You need to do the following:
+
+1. Change the value of the `SIMJECT` flag in your project settings to `YES`.
+2. Add the following to the top of your `.xm` file:
+```
+%config(generator=internal);
+```
+3. Start an iOS Simulator (`Xcode -> Open Developer Tool -> Simulator`) and wait for it to finish starting up
+4. Compile your tweak again
 
 ### Authors
 
