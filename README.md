@@ -12,12 +12,13 @@ iOSOpenDev allows you to develop tweaks and other jailbroken utilities using Xco
 
 ### Installation
 
-1. Clone this repository (requires usage of `git submodule`)
+1. Clone this repository (requires usage of `git submodule`) to `/opt`
+   The end path for e.g. `install.sh` should be `/opt/iOSOpenDev/install.sh`
 2. `cd` to it
 3. Run `git submodule init && git submodule update`
 4. Run `./install --theos=/opt/theos`
 
-### `./install` options
+### `./install.sh` options
 
 | Option                        |  Result                                                                                                             |
 | ------------------------ | ------------------------------------------------------------------------------------- |
@@ -31,13 +32,13 @@ iOSOpenDev allows you to develop tweaks and other jailbroken utilities using Xco
 Whenever you update Xcode, the new SDK needs to be patched, and the old ones to be moved into place. Simply run the following to do this: 
 
 ```
-./install --patch-xcode
+./install.sh --patch-xcode
 ```
 
 You may also need to patch any new iOS simulators. Use the following to do this:
 
 ```
-./install --patch-simject
+./install.sh --patch-simject
 ```
 
 ### Usage
@@ -45,6 +46,10 @@ You may also need to patch any new iOS simulators. Use the following to do this:
 - To create a new project, use Xcode's `File -> New -> Project` option. Then, scroll down to `Templates` in the `iOS` tab.
 - To compile a project, use Xcode's `Product -> Build`. Executables built can be found via the auto-generated `LatestBuild` symlink, with built packages under `Packages`.
 - To change version numbers of a built package, modify `PackageVersion.plist`.
+
+### Known issues
+
+When you create a new project, you'll need to adjust the deployment target to `<= 10.3`. This is to avoid Xcode complaining that iOS 12 doesn't support 32-bit targets.
 
 ### iOS Simulator
 
