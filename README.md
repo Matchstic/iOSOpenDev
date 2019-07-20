@@ -1,7 +1,6 @@
 ## iOSOpenDev—iOS Open Development
-Copyright (c) 2012-2013 Spencer W.S. James (Kokoabim).
-
-Copyright (c) 2019- Matt Clarke (Matchstic).
+- Copyright (c) 2012-2013 Spencer W.S. James (Kokoabim).
+- Copyright (c) 2019- Matt Clarke (Matchstic).
 
 iOSOpenDev allows you to develop tweaks and other jailbroken utilities using Xcode.
 
@@ -62,7 +61,7 @@ Right now, running tweaks in the iOS Simulator isn't super smooth. You need to d
 ```
 3. Start an iOS Simulator (`Xcode -> Open Developer Tool -> Simulator`) and wait for it to finish starting up
 4. Copy the `.plist` sitting alongside your `dylib` to `/opt/simject` (temporary workaround, needed only the first time)
-5. Compile your tweak again
+5. Compile your tweak again targeting an iOS Simulator
 
 ### Authors
 
