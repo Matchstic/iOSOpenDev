@@ -49,7 +49,7 @@ You may also need to patch any new iOS simulators. Use the following to do this:
 
 ### Known issues
 
-When you create a new project, you'll need to adjust the deployment target to `<= 10.3`. This is to avoid Xcode complaining that iOS 12 doesn't support 32-bit targets.
+When you create a new project, you'll need to adjust the deployment target to `<= 10.3` if you're targeting `armv7`. This is to avoid Xcode complaining that iOS 12 and higher don't support 32-bit targets.
 
 ### iOS Simulator
 
