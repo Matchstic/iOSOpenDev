@@ -1550,7 +1550,7 @@ function xcodeBuildPhase_arm64eLegacyPostbuild() # no args
     fi
 
 
-    if [ "${CONFIGURATION}" = "Release" ];then
+    if [ "${CONFIGURATION}" != "Release" ];then
       exit 0;
     fi
 
