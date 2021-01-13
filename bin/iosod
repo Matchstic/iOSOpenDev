@@ -61,7 +61,8 @@ export ActionNames=( \
 	"UpdateIncludeAndLib" \
 	"DumpSDKHeaders" "CopyHeadersToSDK" "DumpAndCopyHeaders" "RemoveCopiedHeaders" "DumpAllHeaders" \
 	"AddSshKeyToDevice" \
-	"XcodeBuildPhase" "XcodeBuildPhaseLogos" "XcodeBuildPhaseSimjectHelper" "XcodeBuildPhaseArm64eLegacy" "Help")
+	"XcodeBuildPhase" "XcodeBuildPhaseLogos" "XcodeBuildPhaseSimjectHelper" "XcodeBuildPhaseArm64eLegacy" \
+    "XcodeBuildPhaseArm64ePrepare" "Help")
 export ActionProperty_ShortArg=0
 export ActionProperty_ShortUsage=1
 export ActionProperty_Options=2
@@ -222,6 +223,11 @@ export Action_XcodeBuildPhase=("--simject-helper" "" "" 0 0 xcodeBuildPhase_Simj
 export Action_XcodeBuildPhaseArm64eLegacy=("--arm64e-legacy-postbuild" "" "" 0 0 xcodeBuildPhase_arm64eLegacyPostbuild false \
 "        DO NOT USE. For use by Xcode as a Build Phase for projects created from
         iOSOpenDev templates only.")
+
+export Action_XcodeBuildPhaseArm64ePrepare=("--arm64e-legacy-prebuild" "" "" 0 0 xcodeBuildPhase_Prepare false \
+"        DO NOT USE. For use by Xcode as a Build Phase for projects created from
+        iOSOpenDev templates only.")
+            
 
 export Action_SshToDevice=("ssh" "[-h host_address] [-p host_port]" "h:p:" 0 0 sshToDevice false \
 "        Secure Shell (SSH) to device at <host_address>. If <host_address> is
@@ -1536,12 +1542,15 @@ function xcodeBuildPhase_SimjectHelper() # no args
 
 function xcodeBuildPhase_arm64eLegacyPostbuild() # no args
 {
-    if [ "${SKIP_LEGACY}" -eq "1" ];then
+	[[ "$ACTION" == "build" ]] || \
+		panic 1 "For Xcode Build Phase use only"
+    
+    if [ "${SKIP_LEGACY}" = "1" ];then
       exit 0;
     fi
 
 
-    if [ "${CONFIGURATION}" -eq "Release" ];then
+    if [ "${CONFIGURATION}" = "Release" ];then
       exit 0;
     fi
 
@@ -1562,7 +1571,14 @@ function xcodeBuildPhase_arm64eLegacyPostbuild() # no args
 
 function xcodeBuildPhase_Prepare() 
 {
-    if [ "${CONFIGURATION}" -eq "Release" ];then
+	[[ "$ACTION" == "build" ]] || \
+		panic 1 "For Xcode Build Phase use only"
+    
+    if [ "${SKIP_LEGACY}" = "1" ]; then
+      return
+    fi
+    
+    if [ "${CONFIGURATION}" = "Release" ]; then
       echo "Cleaned built product"
       rm -f "${BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}"
     fi
@@ -1572,9 +1588,6 @@ function xcodeBuildPhase_Logos() # no args
 {
 	[[ "$ACTION" == "build" ]] || \
 		panic 1 "For Xcode Build Phase use only"
-    
-    # Clean current build if needed for legacy arm64e linking
-    xcodeBuildPhase_Prepare()
 	
 	echo "Preparing to run Xcode Build Phase for Logos Processor..."
 
@@ -2003,6 +2016,9 @@ case "${activeActionArg[$ActionProperty_ShortArg]}" in
     ${Action_XcodeBuildPhaseArm64eLegacy[$ActionProperty_ShortArg]})
 		"${activeActionArg[$ActionProperty_Function]}"
 	;;
+    ${Action_XcodeBuildPhaseArm64ePrepare[$ActionProperty_ShortArg]})
+    	"${activeActionArg[$ActionProperty_Function]}"
+    ;;
 esac
 
 # finished #
