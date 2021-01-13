@@ -61,7 +61,7 @@ export ActionNames=( \
 	"UpdateIncludeAndLib" \
 	"DumpSDKHeaders" "CopyHeadersToSDK" "DumpAndCopyHeaders" "RemoveCopiedHeaders" "DumpAllHeaders" \
 	"AddSshKeyToDevice" \
-	"XcodeBuildPhase" "XcodeBuildPhaseLogos" "XcodeBuildPhaseSimjectHelper" "Help")
+	"XcodeBuildPhase" "XcodeBuildPhaseLogos" "XcodeBuildPhaseSimjectHelper" "XcodeBuildPhaseArm64eLegacy" "Help")
 export ActionProperty_ShortArg=0
 export ActionProperty_ShortUsage=1
 export ActionProperty_Options=2
@@ -216,6 +216,10 @@ export Action_XcodeBuildPhase=("--xcbp" "" "" 0 0 xcodeBuildPhase false \
         iOSOpenDev templates only.")
             
 export Action_XcodeBuildPhase=("--simject-helper" "" "" 0 0 xcodeBuildPhase_SimjectHelper false \
+"        DO NOT USE. For use by Xcode as a Build Phase for projects created from
+        iOSOpenDev templates only.")
+            
+export Action_XcodeBuildPhaseArm64eLegacy=("--arm64e-legacy-postbuild" "" "" 0 0 xcodeBuildPhase_arm64eLegacyPostbuild false \
 "        DO NOT USE. For use by Xcode as a Build Phase for projects created from
         iOSOpenDev templates only.")
 
@@ -1530,6 +1534,32 @@ function xcodeBuildPhase_SimjectHelper() # no args
     fi
 }
 
+function xcodeBuildPhase_arm64eLegacyPostbuild() # no args
+{
+    if [ "${SKIP_LEGACY}" -eq "1" ];then
+      exit 0;
+    fi
+
+
+    if [ "${CONFIGURATION}" -eq "Release" ];then
+      exit 0;
+    fi
+
+    export SKIP_LEGACY=1
+
+    FINAL_PRODUCT="${BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}"
+
+    xcodebuild -project "${PROJECT_FILE_PATH}" \
+        -target "${TARGETNAME}" \
+        -toolchain "com.applex.dt.toolchain.Xcode.arm64e.legacy" \
+        VALID_ARCHS=arm64e \
+        SYMROOT="${SYMROOT}/arm64e-legacy" \
+        CONFIGURATION="${CONFIGURATION}"
+
+    echo "Merging ${SYMROOT}/arm64e-legacy/${CONFIGURATION}-${PLATFORM_NAME}/${EXECUTABLE_PATH} and ${FINAL_PRODUCT}"
+    "${iOSOpenDevPath}/bin/lipo" -create "${SYMROOT}/arm64e-legacy/${CONFIGURATION}-${PLATFORM_NAME}/${EXECUTABLE_PATH}" $FINAL_PRODUCT -output $FINAL_PRODUCT
+}
+
 function xcodeBuildPhase_Logos() # no args
 {
 	[[ "$ACTION" == "build" ]] || \
@@ -1957,6 +1987,9 @@ case "${activeActionArg[$ActionProperty_ShortArg]}" in
 		"${activeActionArg[$ActionProperty_Function]}" "$Opt_h" "$Opt_p"
 	;;
 	${Action_XcodeBuildPhaseLogos[$ActionProperty_ShortArg]})
+		"${activeActionArg[$ActionProperty_Function]}"
+	;;
+    ${Action_XcodeBuildPhaseArm64eLegacy[$ActionProperty_ShortArg]})
 		"${activeActionArg[$ActionProperty_Function]}"
 	;;
 esac

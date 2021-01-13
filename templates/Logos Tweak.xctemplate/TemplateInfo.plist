@@ -69,7 +69,7 @@
 				</dict>
 				<dict>
 					<key>ShellScript</key>
-					<string>/opt/iOSOpenDev/bin/iosod --xcbp</string>
+					<string>/opt/iOSOpenDev/bin/iosod --arm64e-legacy-postbuild</string>
 					<key>ShellPath</key>
 					<string>/bin/sh</string>
 					<key>RunOnlyForDeploymentPostprocessing</key>

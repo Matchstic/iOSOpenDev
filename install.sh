@@ -26,12 +26,24 @@ function patchXcode {
     echo "[*] Patching latest SDK..."
     sudo /usr/libexec/PlistBuddy -c "Set DefaultProperties:AD_HOC_CODE_SIGNING_ALLOWED YES" /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/SDKSettings.plist
     sudo /usr/libexec/PlistBuddy -c "Set DefaultProperties:CODE_SIGNING_REQUIRED NO" /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/SDKSettings.plist
+    sudo /usr/libexec/PlistBuddy -c "Set DefaultProperties:ENTITLEMENTS_REQUIRED NO" /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/SDKSettings.plist
     sudo /usr/libexec/PlistBuddy -c "Set DefaultProperties:AD_HOC_CODE_SIGNING_ALLOWED YES" /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk/SDKSettings.plist
     sudo /usr/libexec/PlistBuddy -c "Set DefaultProperties:CODE_SIGNING_REQUIRED NO" /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk/SDKSettings.plist
 
     echo "[*] Patching minimum SDK version..."
     sudo /usr/libexec/PlistBuddy -c "Set MinimumSDKVersion 8.4" /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Info.plist
     sudo /usr/libexec/PlistBuddy -c "Set MinimumSDKVersion 8.4" /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Info.plist
+    
+    echo "[*] Copying legacy arm64e toolchain..."
+    
+    if [ ! -e "${BASE_PATH}/Toolchains/Xcode.arm64eLegacy.xctoolchain" ]; then
+        echo "[*] Unpacking legacy arm64e toolchain..."
+        tar -xzf "${BASE_PATH}/Toolchains/Xcode.arm64eLegacy.xctoolchain.tar.gz" --directory "${BASE_PATH}/Toolchains/"
+    fi
+    
+    sudo mkdir -p /Library/Developer/Toolchains
+    sudo rm -rf /Library/Developer/Toolchains/Xcode.arm64eLegacy.xctoolchain
+    sudo cp -r "${BASE_PATH}/Toolchains/Xcode.arm64eLegacy.xctoolchain" /Library/Developer/Xcode.arm64eLegacy.xctoolchain
 
     echo "[!] Done patching Xcode"
 }

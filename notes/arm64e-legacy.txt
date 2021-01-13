@@ -1,0 +1,45 @@
+xcodebuild -project Xen\ HTML.xcodeproj VALID_ARCHS=arm64e -target Loader -toolchain "com.applex.dt.toolchain.Xcode.arm64e.legacy" SYMROOT="$(pwd)/DEBUGBUILD/"
+rm -rf ./build
+
+environment variables
+=====================
+
+BUILT_PRODUCTS_DIR=/Users/matt/Library/Developer/Xcode/DerivedData/Xen_HTML-foqfwpqcsqraphbmjzrbmizmehaq/Build/Products/Release-iphoneos
+BUILD_DIR -> end products directory
+BUILD_ROOT
+
+
+TARGETNAME -> current target being built
+SYMROOT -> base path for build
+
+
+Steps for legacy build
+1. Skip if not release build or is already running to avoid recursion
+   if [ "${SKIP_LEGACY}" -eq "1" ];then
+     exit 0;
+   fi
+
+
+   if [ "${CONFIGURATION}" -eq "Release" ];then
+     exit 0;
+   fi
+
+   export SKIP_LEGACY=1
+   
+2. Store final binary name into var
+
+   FINAL_PRODUCT="${BUILT_PRODUCTS_DIR}/FULL_PRODUCT_NAME"
+   
+3. Call for new build of current target: 
+
+   xcodebuild -project "${PROJECT_FILE_PATH}" -target $TARGETNAME -toolchain "com.applex.dt.toolchain.Xcode.arm64e.legacy" VALID_ARCHS=arm64e SYMROOT="${SYMROOT}/arm64e-legacy" CONFIGURATION=$CONFIGURATION
+   
+2. For generated binary, merge into final one under the original SYMROOT
+
+   echo "Merging ${SYMROOT}/arm64e-legacy/${CONFIGURATION}-${PLATFORM_NAME}/${FULL_PRODUCT_NAME} and ${FINAL_PRODUCT}"
+   "${iOSOpenDevPath}/bin/lipo" -create "${SYMROOT}/arm64e-legacy/${CONFIGURATION}-${PLATFORM_NAME}/${FULL_PRODUCT_NAME}" $FINAL_PRODUCT -output $FINAL_PRODUCT
+   
+   
+   
+   
+Don't forget to update templates to include this phase
