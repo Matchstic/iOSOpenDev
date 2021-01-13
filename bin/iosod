@@ -1560,10 +1560,21 @@ function xcodeBuildPhase_arm64eLegacyPostbuild() # no args
     "${iOSOpenDevPath}/bin/lipo" -create "${SYMROOT}/arm64e-legacy/${CONFIGURATION}-${PLATFORM_NAME}/${EXECUTABLE_PATH}" $FINAL_PRODUCT -output $FINAL_PRODUCT
 }
 
+function xcodeBuildPhase_Prepare() 
+{
+    if [ "${CONFIGURATION}" -eq "Release" ];then
+      echo "Cleaned built product"
+      rm -f "${BUILT_PRODUCTS_DIR}/${EXECUTABLE_PATH}"
+    fi
+}
+
 function xcodeBuildPhase_Logos() # no args
 {
 	[[ "$ACTION" == "build" ]] || \
 		panic 1 "For Xcode Build Phase use only"
+    
+    # Clean current build if needed for legacy arm64e linking
+    xcodeBuildPhase_Prepare()
 	
 	echo "Preparing to run Xcode Build Phase for Logos Processor..."
 
