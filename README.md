@@ -16,7 +16,7 @@ iOSOpenDev allows you to develop tweaks and other jailbroken utilities using Xco
    The end path for e.g. `install.sh` should be `/opt/iOSOpenDev/install.sh`
 2. `cd` to it
 3. Run `git submodule init && git submodule update`
-4. Run `THEOS=/opt/theos ./install.sh --theos=/opt/theos` (not the nicest of commands but should work. Update the path to theos if needed.)
+4. Run `./install.sh` (see options below to e.g. specify where `theos` is installed)
 5. For future ease of use, its a good idea to make `/opt` writeable for your user account without using `sudo`.
 
 NOTE: if you run the script more than once, that may fail when copying SDKs. Try clearing the ones in `/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/` (NOT the most recent one, or the symlinked one), and try again.
