@@ -8,11 +8,10 @@ iOSOpenDev allows you to develop tweaks and other jailbroken utilities using Xco
 
 - [`theos`](https://github.com/theos/theos): to handle stuff like pre-processing Logos syntax.
 - [`simject`](https://github.com/angelXwind/simject): to run tweaks in the iOS Simulator
-- git LFS
 
 ### Installation
 
-0. Make sure you have installed and setup git LFS on your machine, as well as `theos`
+0. Make sure you have installed and setup `theos` on your machine
 1. Clone this repository to `/opt`
    The end path for e.g. `install.sh` should be `/opt/iOSOpenDev/install.sh`
 2. `cd` to it
