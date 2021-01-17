@@ -65,7 +65,9 @@ function patchSimulators {
 }
 
 function installSimject {
+    export THEOS=$THEOS_PATH
     BASE_PATH=$1
+    
     echo "[*] Installing simject"
 
     cd "${BASE_PATH}/deps/simject"
