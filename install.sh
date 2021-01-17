@@ -34,12 +34,17 @@ function patchXcode {
     sudo /usr/libexec/PlistBuddy -c "Set MinimumSDKVersion 8.4" /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Info.plist
     sudo /usr/libexec/PlistBuddy -c "Set MinimumSDKVersion 8.4" /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Info.plist
     
-    echo "[*] Copying legacy arm64e toolchain..."
-    
     if [ ! -e "${BASE_PATH}/Toolchains/Xcode.arm64eLegacy.xctoolchain" ]; then
+        mkdir -p "${BASE_PATH}/Toolchains"
+        
+        echo "[*] Downloading legacy arm64e toolchain (442 MB compressed, 1.4 GB unpacked) -- this will take a while"
+        wget -O "${BASE_PATH}/Toolchains/Xcode.arm64eLegacy.xctoolchain.tar.bz2" https://incendo.ws/files/Xcode.arm64eLegacy.xctoolchain.tar.bz2
+        
         echo "[*] Unpacking legacy arm64e toolchain..."
-        tar -xzf "${BASE_PATH}/Toolchains/Xcode.arm64eLegacy.xctoolchain.tar.gz" --directory "${BASE_PATH}/Toolchains/"
+        tar -xf "${BASE_PATH}/Toolchains/Xcode.arm64eLegacy.xctoolchain.tar.bz2" --directory "${BASE_PATH}/Toolchains/"
     fi
+    
+    echo "[*] Copying legacy arm64e toolchain..."
     
     sudo mkdir -p /Library/Developer/Toolchains
     sudo rm -rf /Library/Developer/Toolchains/Xcode.arm64eLegacy.xctoolchain
