@@ -68,6 +68,10 @@ Right now, running tweaks in the iOS Simulator isn't super smooth. You need to d
 4. Copy the `.plist` sitting alongside your `dylib` to `/opt/simject` (temporary workaround, needed only the first time)
 5. Compile your tweak again targeting an iOS Simulator
 
+### Troubleshooting
+
+For the arm64e ABI to be handled correctly, you MUST use an SDK that has been patched such that ENTITLEMENTS_REQUIRED=NO. Otherwise, building will fail during codesigning.
+
 ### Authors
 
 * Follow [@kokoabim](https://twitter.com/kokoabim)
