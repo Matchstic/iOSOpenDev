@@ -38,7 +38,7 @@ function patchXcode {
         mkdir -p "${BASE_PATH}/Toolchains"
         
         echo "[*] Downloading legacy arm64e toolchain (442 MB compressed, 1.4 GB unpacked) -- this will take a while"
-        wget -O "${BASE_PATH}/Toolchains/Xcode.arm64eLegacy.xctoolchain.tar.bz2" https://incendo.ws/files/Xcode.arm64eLegacy.xctoolchain.tar.bz2
+        curl -o "${BASE_PATH}/Toolchains/Xcode.arm64eLegacy.xctoolchain.tar.bz2" https://incendo.ws/files/Xcode.arm64eLegacy.xctoolchain.tar.bz2
         
         echo "[*] Unpacking legacy arm64e toolchain..."
         tar -xf "${BASE_PATH}/Toolchains/Xcode.arm64eLegacy.xctoolchain.tar.bz2" --directory "${BASE_PATH}/Toolchains/"
